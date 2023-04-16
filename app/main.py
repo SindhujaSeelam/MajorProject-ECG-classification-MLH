@@ -10,7 +10,7 @@ from src.visualization import plot_ecg
 # Page layout
 ## Page expands to full width
 st.set_page_config(
-    page_title='🫀 ECG Classification',
+    page_title=' ECG Classification',
     # anatomical heart favicon
     page_icon="https://api.iconify.design/openmoji/anatomical-heart.svg?width=500",
     layout='wide'
@@ -18,20 +18,14 @@ st.set_page_config(
 
 # PAge Intro
 st.write("""
-# 🫀 ECG Classification
+#  ECG Classification
 
 For this app, we trained a model to detect heart anomalies based on the [Physionet 2017 Cardiology Challenge](https://physionet.org/content/challenge-2017/1.0.0/) 
 dataset.
 
 **Possible Predictions:** Atrial Fibrillation, Normal, Other Rhythm, or Noise
 
-### Authors:
-
-- Simon E. Sanchez Viloria
-- Andres Ruiz Calvo
-- Daniel De Las Cuevas Turel
-- Enrique Botía Barbera
-- Zijun He
+### 
 
 
 **Try uploading your own ECG!**
@@ -42,7 +36,7 @@ dataset.
 #---------------------------------#
 # Data preprocessing and Model building
 
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def read_ecg_preprocessing(uploaded_ecg):
 
       FS = 300
@@ -67,12 +61,12 @@ def read_ecg_preprocessing(uploaded_ecg):
 model_path = 'models/weights-best.hdf5'
 classes = ['Normal','Atrial Fibrillation','Other','Noise']
 
-@st.cache(allow_output_mutation=False,ttl=24*60*60)
+#@st.cache(allow_output_mutation=False,ttl=24*60*60)
 def get_model(model_path):
     model = load_model(f'{model_path}')
     return model
 
-@st.cache(allow_output_mutation=True,show_spinner=False)
+#@st.cache(allow_output_mutation=True,show_spinner=False)
 def get_prediction(data,model):
     prob = model(data)
     ann = np.argmax(prob)
@@ -84,7 +78,7 @@ def get_prediction(data,model):
 
 
 # Visualization --------------------------------------
-@st.cache(allow_output_mutation=True,show_spinner=False)
+#@st.cache(allow_output_mutation=True,show_spinner=False)
 def visualize_ecg(ecg,FS):
     fig = plot_ecg(uploaded_ecg=ecg, FS=FS)
     return fig
@@ -159,7 +153,7 @@ else:
     st.sidebar.markdown("Remove the file above to demo using the validation set.")
 
 st.sidebar.markdown("---------------")
-st.sidebar.markdown("Check the [Github Repository](https://github.com/simonsanvil/ECG-classification-MLH) of this project")
+#st.sidebar.markdown("Check the [Github Repository](https://github.com/simonsanvil/ECG-classification-MLH) of this project")
 #---------------------------------#
 # Main panel
 
@@ -174,7 +168,7 @@ if uploaded_file is not None:
         ecg = read_ecg_preprocessing(uploaded_file)
         
         fig = visualize_ecg(ecg, FS=300)
-        st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig) 
         
 
     with col2: # classify ECG
@@ -188,8 +182,8 @@ if uploaded_file is not None:
 
         st.write("ECG classified as **{}**".format(pred))
         pred_confidence = conf[0,np.argmax(conf)]*100
-        st.write("Confidence of the prediction: **{:3.1f}%**".format(pred_confidence))
-        st.write(f"**Likelihoods:**")
-        st.markdown(mkd_pred_table, unsafe_allow_html=False)
+        #st.write("Confidence of the prediction: **{:3.1f}%**".format(pred_confidence))
+        #st.write(f"**Likelihoods:**")
+        #st.markdown(mkd_pred_table, unsafe_allow_html=False)
 
     # st.line_chart(np.concatenate(ecg).ravel().tolist())
